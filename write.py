@@ -60,6 +60,7 @@ def FinishQuote(new_text, goal_length, character_to_check):
 
     max_length_to_look_back = len(new_text);
     while(len(new_text) < goal_length):
+        max_length_to_look_back = min(max_length_to_look_back, 2); # BOUND WITHIN 2
         frequencies = [0 for i in range(0, len(words_indices))];
         while(True):
             length_to_look_back = max_length_to_look_back;
