@@ -12,30 +12,45 @@
       </h1>
     {% endif %}
     <form method="POST" class="boxed">
-      <div class="padded"><label>Starting Text<input type="text" name="text_inp" placeholder="insert starting text" ></label></div>
-      <div class="padded"><label>Number of Words to Fill<input type="number" name="length_inp" placeholder="insert result length" ></label></div>
-      <div class="padded"><label>Play
-        <select name="play" id="play" value="{{ tit }}">
-          <option value="{{ tit }}" selected>{{ tit }}</option> 
-          {% for opt in urls %}
-            {% if opt != tit %}
-              <option value="{{ opt }}">{{ opt }}</option>
-            {% endif %}
-          {% endfor %}
-        </select>
-      </label></div>
-      <div class="padded"><label>Character
-        <select name="character" id="character">
-          <option value="{{ chr }}" selected >{{ chr }}</option>
-          {% for opt in character_list %}
-            {% if opt != chr %}
-              <option value="{{ opt }}">{{ opt }}</option>
-            {% endif %}
-          {% endfor %}
-        </select>
-      </label></div>
+      <div class="row">
+        <div class="column">
+          <div class="padded"><label>Starting Text: <input type="text" name="text_inp" placeholder="insert starting text" ></label></div>
+        </div>
+        <div class="column">
+          <div class="padded"><label>Number of Words to Fill: <input type="number" name="length_inp" placeholder="insert final length" ></label></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <div class="padded"><label>Play:
+            <select name="play" id="play" value="{{ tit }}" onchange="this.form.submit()">
+              <option value="{{ tit }}" selected>{{ tit }}</option> 
+              {% for opt in urls %}
+                {% if opt != tit %}
+                  <option value="{{ opt }}">{{ opt }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </label></div>
+        </div>
+        <div class="column">
+          <div class="padded"><label>Character:
+            <select name="character" id="character" onchange="this.form.submit()">
+              <option value="{{ chr }}" selected >{{ chr }}</option>
+              {% for opt in character_list %}
+                {% if opt != chr %}
+                  <option value="{{ opt }}">{{ opt }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </label></div>
+        </div>
+      </div>
       <div class="center"><input type="submit" ></div>
     </form>
     <div class="results"><p>{{ val }}</p></div>
   </body>
+  <footer class="footer">
+    <p>Designed by Calvin Osborne '25</p>
+  </footer>
 </html>

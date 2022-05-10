@@ -1,7 +1,6 @@
 import numpy as np;
 import re;
 
-character_list = [];
 def GetCharacters():
     characters_file = open("characters.txt", "r");
     characters = characters_file.readlines();
@@ -10,9 +9,9 @@ def GetCharacters():
     character_list = [];
 
     for i in range(0, len(characters)):
-        for character in characters[i].split():
-            if(not character.upper() in character_list):
-                character_list.append(character.upper());
+        character = characters[i].upper()[:-1];
+        if(not character in character_list):
+            character_list.append(character);
     
     character_list.sort();
 
@@ -38,8 +37,7 @@ def FinishQuote(new_text, goal_length, character_to_check):
 
     character_for_line = {};
     for i in range(0, len(characters)):
-        for character in characters[i].split():
-            character_for_line[i] = character.upper();
+        character_for_line[i] = characters[i].upper()[:-1];
 
     tempest_by_word = [];
     characters_by_word = [];
@@ -60,23 +58,25 @@ def FinishQuote(new_text, goal_length, character_to_check):
             characters_by_word.append(character_for_line.get(i));
     indices_lookup = {v: k for k, v in words_indices.items()}
 
+    max_length_to_look_back = len(new_text);
     while(len(new_text) < goal_length):
-        length_to_look_back = len(new_text);
         frequencies = [0 for i in range(0, len(words_indices))];
         while(True):
+            length_to_look_back = max_length_to_look_back;
             if(length_to_look_back == 0):
-                return ["WORD NOT FROUND FROM THE CHARACTER(s)."];
+                return ["WORD NOT FROUND FROM THE CHARACTER(S)"];
             for i in range(length_to_look_back, len(tempest_by_word)):
                 flag = True;
                 for j in range(0, length_to_look_back):
-                    if(not tempest_by_word[i - length_to_look_back + j] == new_text[len(new_text) - length_to_look_back + j] or (not character_to_check == None and not characters_by_word[i - length_to_look_back + j] == character_to_check)):
+                    if(not tempest_by_word[i - length_to_look_back + j] == new_text[len(new_text) - length_to_look_back + j] or (not character_to_check == "NONE" and not characters_by_word[i - length_to_look_back + j] == character_to_check)):
                         flag = False;
                         break;
                 if(flag):
                     frequencies[words_indices.get(tempest_by_word[i])] += 1;
             if(np.amax(frequencies) == 0):
-                length_to_look_back -= 1;
+                max_length_to_look_back -= 1;
                 continue;
             break;
         new_text.append(indices_lookup.get(np.argmax(frequencies)));
+        max_length_to_look_back += 1;
     return new_text
